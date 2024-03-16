@@ -8,11 +8,33 @@ const Button = ({ handleClick, text }) => (
   </button>
 )
 
-const Statistics = (props) => {
+const Total = ({good, neutral, bad}) => {
+
+  const total = good + neutral + bad;
+
+  if  (total === 0){
     return (
-      <p>
-        {}
-      </p>
+      <div>
+        No feedback given
+      </div>
+      )
+  }
+
+  return (
+    <div>
+      <Statistics text="good" value={good}/>
+      <Statistics text="neutral" value={neutral}/>
+      <Statistics text="bad" value={bad}/>
+      <Statistics text="all" value={total}/>
+      <Statistics text="average" value={good - bad / total}/>
+      <Statistics text="positive" value={total / good}/>
+    </div>
+  )
+}
+
+const Statistics = ({text, value}) => {
+    return (
+      <p>{text} {value}</p>
     )
 }
 
@@ -23,36 +45,32 @@ const App = () => {
   const [bad, setBad] = useState(0)
 
   const handleGoodClick = () => {
-    setGood(good + 1)
-  }
+    setGood(good + 1);
+  };
 
   const handleNeutralClick = () => {
-    setNeutral(neutral + 1)
-  }
+    setNeutral(neutral + 1);
+  };
 
   const handleBadClick = () => {
-    setBad(bad + 1)
-  }
+    setBad(bad + 1);
+  };
 
-  const total = good + bad + neutral;
-  const average = good - bad / total;
-  const positive = total / good;
-
+  // const total = good + bad + neutral;
+  // const average = good - bad / total;
+  // const positive = total / good;
 
   return (
     <div>
       <h1>Give Feedback</h1>
-      <Button handleClick={handleGoodClick} text='Good'/>
-      <Button handleClick={handleNeutralClick} text='Neutral'/>
-      <Button handleClick={handleBadClick} text='Bad'/>
+      <div>
+        <Button handleClick={handleGoodClick} text='Good'/>
+        <Button handleClick={handleNeutralClick} text='Neutral'/>
+        <Button handleClick={handleBadClick} text='Bad'/>
+      </div>
 
       <h1>Statistics</h1>
-      <p>good {good}</p>
-      <p>neutral {neutral}</p>
-      <p>bad {bad}</p>
-      <p>all {total}</p>
-      <p>average {average}</p>
-      <p>positive {positive}</p>
+      <Total good={good} neutral={neutral} bad={bad}/>
     </div>
   )
 }
